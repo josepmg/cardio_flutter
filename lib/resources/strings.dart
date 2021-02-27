@@ -2,19 +2,26 @@ class Strings {
   // App
   static const String app_name = "CARD.IO";
 
+  // AppBar
+  static const String greeting_text_app_bar = "Olá, ";
+  static const String exclamation_point_text_app_bar = "!";
+
+  // Side menu
+  static const String exit_button_side_menu_item = "Sair";
+
   // Login Page
   static const String login_button = "Login";
   static const String sign_up_button = "Ainda não é cadastrado?";
   static const String email_title = "E-mail";
   static const String email_hint = "Insira seu e-mail";
-  static const password_title = "Senha";
-  static const password_hint = "Digite sua senha";
-  static const cancel = "Cancelar";
-  static const signup_warning =
-      "Caso seja um paciente ainda não cadastrado, entre em contato com seu profissional de saúde para que faça seu cadastro.\n\nCaso seja um profissional de saúde autorizado basta clicar em \"OK\" e seguir com seu cadastro";
-  static const okbutton = "OK";
-  static const warning = " Atenção";
-  static const invalid_user_type = "Usuário inválido";
+  static const String password_title = "Senha";
+  static const String password_hint = "Digite sua senha";
+  static const String cancel = "Cancelar";
+  static const String signup_warning =
+      "Caso seja um paciente ainda não cadastrado, entre em contato com seu profissional de saúde para que faça seu cadastro.\n\nCaso seja um profissional de saúde, entre em contato com a equipe de desenvolvimento para que faça seu cadastro.";
+  static const String okbutton = "OK";
+  static const String warning = " Atenção";
+  static const String invalid_user_type = "Usuário inválido";
 
   // Sign Up Page
   static const name_hint = "Nome Completo";
@@ -33,7 +40,6 @@ class Strings {
   static const date = "DD/MM/AAAA";
 
   // Patient Sign Up Page
-
   static const patient_email = "email@email.com";
   static const new_patient_done = "Cadastrar";
   static const edit_patient_done = "Editar";
@@ -47,7 +53,6 @@ class Strings {
       "O horário que você digitou é inválido";
 
   // Menu page
-
   static const biometric = " Como estou hoje";
   static const liquid = " Líquido ingerido";
   static const medication = " Medicações";
@@ -100,14 +105,15 @@ class Strings {
   static const justification = "Por quê?";
   static const justification_hint = "Explique aqui o motivo";
 
-// Liquid Page
+  // Liquid Page
   static const liquid_title = "Prescrição";
   static const hint_liquid = "mL/dia";
   static const ingested_liquids = "Líquidos Ingeridos";
+  static const ingested_liquids_name = "Ex: água, café ...";
+  static const ingested_liquids_quantity = "Ex: 1, 2, 3 ...";
   static const reference = "Referência";
 
-//Medication Page
-
+  //Medication Page
   static const medication_name = "Nome do medicamento";
   static const dosage = "Dosagem";
   static const dosage_hint = "2 mg";
@@ -122,7 +128,6 @@ class Strings {
   static const went = "Compareceu?";
 
   // Medication Page
-
   static const time_hint = "00:00";
   static const observation_hint = "Caso desejado, insira aqui";
 
@@ -139,7 +144,6 @@ class Strings {
   static const swelling_loc_hint = "Diga onde está inchado";
 
   //Professional Help Page
-
   static const professional_help1 = "Tela principal";
   static const professional_help2 = "Cadastro de paciente";
   static const professional_help3 = "Como estou hoje?";
@@ -185,7 +189,6 @@ class Strings {
       "Nesta tela, você encontrará informações sobre a concepção do aplicativo e seus colaboradores.";
 
   //Patient Help Page
-
   static const help1 = "Como estou hoje?";
   static const help2 = "Líquidos Ingeridos";
   static const help3 = "Medicações";
@@ -195,42 +198,46 @@ class Strings {
   static const help7 = "Informações";
 
   static const help_answer1 =
-      "Nesta tela serão exibidas as recomendações do profissional para dados biométricos (cor Azul) e os dados biométricos que já foram preenchidos"
-      " (Cor Laranja); ao clicar no item azul, será possivel preenchê-lo, e ao salvar surgirá um novo item Laranja. Caso tenha ocorrido algum erro"
-      " durante o preenchimento, não se preocupe, pois é possível editá-lo posteriormente; ao clicar no item laranja, aparecerá um menu com 2 opções"
-      ": \"Editar\", para ajustar as informações do item realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada nova"
-      " aferição de dados, clique no item azul correspondente para que assim crie um novo item realizado.";
+      "Nesta tela serão exibidas as recomendações do profissional para dados biométricos (Recomendação) e os dados biométricos que já foram preenchidos"
+      " (Realizado); ao clicar no item cinza \"Recomendação\" e posteriormente no botão Azul \"Realizar\", será possivel preenchê-lo, e ao salvar"
+      " surgirá um novo item verde \"Realizado\" no dia atual. Caso tenha ocorrido algum erro durante o preenchimento, não se preocupe, pois é possível"
+      " editá-lo posteriormente; ao clicar no item \"Realizado\", aparecerá um menu com 2 opções: \"Editar\", para ajustar as informações do item"
+      " realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada nova aferição de dados, clique no item \"Recomendação\""
+      " correspondente para que assim crie um novo item realizado.";
   static const help_answer2 =
-      "Nesta tela serão exibidas as recomendações do profissional para líquidos ingeridos (cor Azul) e os dados de líquidos ingeridos que já foram preenchidos"
-      " (Cor Laranja); ao clicar no item azul, será possivel preenchê-lo, e ao salvar surgirá um novo item Laranja. Caso tenha ocorrido algum erro"
-      " durante o preenchimento, não se preocupe, pois é possível editá-lo posteriormente; ao clicar no item laranja, aparecerá um menu com 2 opções"
-      ": \"Editar\", para ajustar as informações do item realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada novo"
-      " líquido ingerido, clique no item azul correspondente para que assim crie um novo item realizado.";
+      "Nesta tela serão exibidas as recomendações do profissional para líquidos ingeridos (Recomendação) e os dados de líquidos ingeridos que já foram"
+      " preenchidos (Realizado); ao clicar no item cinza \"Recomendação\" e posteriormente no botão Azul \"Realizar\", será possivel preenchê-lo, e ao "
+      " salvar surgirá um novo item verde \"Realizado\" no dia atual. Caso tenha ocorrido algum erro durante o preenchimento, não se preocupe, pois é"
+      " possível editá-lo posteriormente; ao clicar no item \"Realizado\" aparecerá um menu com 2 opções: \"Editar\", para ajustar as informações do,"
+      " item realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada novo líquido ingerido, clique no item \"Recomendação\""
+      " correspondente para que assim crie um novo item realizado.";
   static const help_answer3 =
-      "Nesta tela serão exibidos os medicamentos que o profissional passou (cor Azul) e os dados de medicamentos que já foram preenchidos"
-      " (Cor Laranja); ao clicar no item azul, será possivel preenchê-lo, e ao salvar surgirá um novo item Laranja. Caso tenha ocorrido algum erro"
-      " durante o preenchimento, não se preocupe, pois é possível editá-lo posteriormente; ao clicar no item laranja, aparecerá um menu com 2 opções"
-      ": \"Editar\", para ajustar as informações do item preenchido, e \"Excluir\", caso deseje excluir um dos itens preenchidos. Para cada novo"
-      " medicamento que foi consumido ou deveria ter sido consumido, clique no item azul correspondente para assim preencher um novo item.";
+      "Nesta tela serão exibidos os medicamentos que o profissional passou (Recomendação) e os dados de medicamentos que já foram preenchidos"
+      " (Realizado); ao clicar no item cinza \"Recomendação\" e posteriormente no botão Azul \"Realizar\", será possivel preenchê-lo, e ao salvar"
+      " surgirá um novo item verde \"Realizado\" no dia atual. Caso tenha ocorrido algum erro durante o preenchimento, não se preocupe, pois é possível"
+      " editá-lo posteriormente; ao clicar no item \"Realizado\", aparecerá um menu com 2 opções: \"Editar\", para ajustar as informações do item"
+      " realizado, e \"Excluir\", caso deseje excluir um dos itens preenchidos. Para cada novo medicamento que foi consumido ou deveria ter sido"
+      " consumido, clique no item \"Recomendação\" correspondente para assim preencher um novo item.";
   static const help_answer4 =
-      "Nesta tela serão exibidas todas as consultas marcadas (cor Azul) e os dados das consultas que já passaram"
-      " (Cor Laranja); ao clicar no item azul, será possivel preenchê-lo, e ao salvar surgirá um novo item Laranja. Caso tenha ocorrido algum erro"
-      " durante o preenchimento, não se preocupe, pois é possível editá-lo posteriormente; ao clicar no item laranja, aparecerá um menu com 2 opções"
-      ": \"Editar\", para ajustar as informações do item realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada nova"
-      " consulta que compareceu, ou deveria ter comparecido, clique no item azul para preenchê-lo.";
+      "Nesta tela serão exibidas todas as consultas marcadas (Recomendação) e os dados das consultas que já passaram (Realizado);"
+      " (Realizado); ao clicar no item cinza \"Recomendação\" e posteriormente no botão Azul \"Realizar\", será possivel preenchê-lo, e ao salvar"
+      " surgirá um novo item verde \"Realizado\" no dia atual. Caso tenha ocorrido algum erro durante o preenchimento, não se preocupe, pois é possível"
+      " editá-lo posteriormente; ao clicar no item \"Realizado\", aparecerá um menu com 2 opções: \"Editar\", para ajustar as informações do item"
+      " realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada nova consulta que compareceu, ou deveria ter comparecido,"
+      " clique no item \"Recomendação\" para preenchê-lo.";
   static const help_answer5 =
-      "Nesta tela serão exibidos os exercícios recomendados pelo profissional (cor Azul) e os exercícios que já foram preenchidos"
-      " (Cor Laranja); ao clicar no item azul, será possivel preenchê-lo, e ao salvar surgirá um novo item Laranja. Caso tenha ocorrido algum erro"
-      " durante o preenchimento, não se preocupe, pois é possível editá-lo posteriormente; ao clicar no item laranja, aparecerá um menu com 2 opções"
-      ": \"Editar\", para ajustar as informações do item realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada novo"
-      " exercício realizado, clique no item azul correspondente para que assim crie um novo item realizado.";
+      "Nesta tela serão exibidos os exercícios recomendados pelo profissional (Recomendação) e os exercícios que já foram preenchidos (Realizado); ao"
+      " (Realizado); ao clicar no item cinza \"Recomendação\" e posteriormente no botão Azul \"Realizar\", será possivel preenchê-lo, e ao salvar"
+      " surgirá um novo item verde \"Realizado\" no dia atual. Caso tenha ocorrido algum erro durante o preenchimento, não se preocupe, pois é possível"
+      " editá-lo posteriormente; ao clicar no item \"Realizado\", aparecerá um menu com 2 opções: \"Editar\", para ajustar as informações do item"
+      " realizado, e \"Excluir\", caso deseje excluir um dos itens realizados. Para cada novo exercício realizado, clique no item \"Recomendação\""
+      " correspondente para que assim crie um novo item realizado.";
   static const help_answer6 =
       "Nesta tela, você encontrará informações sobre a Insuficiência Cardíaca.";
   static const help_answer7 =
       "Nesta tela, você encontrará informações sobre a concepção do aplicativo e seus colaboradores.";
 
   // Orientations Page
-
   static const orientation1 = "Insuficiência cardíaca?";
   static const orientation2 = "Sinais e Sintomas da Insuficiência Cardíaca  ";
   static const orientation3 = "Alimentação";
@@ -247,53 +254,53 @@ class Strings {
   static const orientation14 = "Viagens";
 
   static const orientation_answer2 =
-      "Os sintomas podem aparecer aos poucos quando se realiza alguma atividade, ou até mesmo, em repouso.\n"
+      " Os sintomas podem aparecer aos poucos quando se realiza alguma atividade, ou até mesmo, em repouso.\n"
       "Exemplo de sintomas:\n"
-      "1. Falta de ar\n2. Tosse\n3. Enjoo\n4. Palpitações \n5. Ganho de peso"
-      "\n6. Inchaço nas pernas, pés ou tornozelos\n7. Tontura\n8. Cansaço \n9. Confusão mental";
+      "1. Falta de ar;\n2. Tosse;\n3. Náusea;\n4. Palpitações;\n5. Ganho de peso;"
+      "\n6. Inchaço nas pernas, pés ou tornozelos;\n7. Tontura;\n8. Cansaço;\n9. Confusão mental.";
   static const orientation_answer1 =
       "É a dificuldade do coração em se encher de sangue corretamente e bombeá-lo de "
-      "forma suficiente para abastecer as necessidades do corpo ";
+      "forma suficiente para abastecer as necessidades do corpo.";
   static const orientation_answer3_1 =
-      "1. Mantenha alimentação saudável, com pouca gordura, pouco sal e rica em frutas, legumes e verduras\n\n2.";
+      "1. Mantenha alimentação saudável, com pouca gordura, pouco sal e rica em frutas, legumes e verduras;\n\n2.";
   static const orientation_answer3_2 =
-      "os alimentos embutidos, comidas congeladas (industrializadas), temperos prontos, alimentos em conservas e os "
+      " os alimentos embutidos, comidas congeladas (industrializadas), temperos prontos, alimentos em conservas e os "
       "industrializados, pois o conservante utilizado é rico em sódio.  "
-      "Exemplos:\n- Caldo de carne e legumes prontos; \n- Ketchup \n- Refrigerante \n- Amendoim  \n- Bacalhau  \n- Salsicha "
-      " \n- Bacon \n- Queijos amarelos "
-      "\n- Pele de frango  \n- Carnes gordas \n- Mortadela \n\n3. ";
+      "Exemplos:\n- Caldo de carne e legumes prontos;\n- Ketchup;\n- Refrigerante;\n- Amendoim;\n- Bacalhau;\n- Salsicha;"
+      " \n- Bacon;\n- Queijos amarelos;"
+      "\n- Pele de frango;\n- Carnes gordas;\n- Mortadela.\n\n3. ";
   static const orientation_answer3_3 =
-      "\nExemplos: \n- Alho \n- Cebola  \n- Manjericão \n- Orégano \n- Alecrim  \n- Salsa \n- Coentro \n- Tomilho \n- Louro "
-      "\nEntre outros";
+      "\n- Alho;\n- Cebola; \n- Manjericão;\n- Orégano;\n- Alecrim;\n- Salsa;\n- Coentro;\n- Tomilho;\n- Louro;"
+      "\n- Entre outros...";
   static const orientation_answer4 =
-      "- Não beba líquido em excesso\n- Contabilize os líquidos com a ajuda de um copo dosador \n - Siga as orientações oferecidas"
-      " durante a consulta presencial ";
+      "- Não beba líquido em excesso;\n- Contabilize os líquidos com a ajuda de um copo dosador;\n- Siga as orientações oferecidas"
+      " durante a consulta presencial.";
   static const orientation_answer5 =
-      "- Praticar atividade física pode melhorar os sintomas da Insuficiência Cardíaca, aumentar a capacidade de esforço e "
+      "Praticar atividade física pode melhorar os sintomas da Insuficiência Cardíaca, aumentar a capacidade de esforço e "
       "melhorar sua qualidade de vida! "
-      "\n- Converse com seu Cardiologista e Fisioterapeuta e veja se está apto a praticar atividades e qual a mais apropriada para você.";
+      "\n\nConverse com seu Cardiologista e Fisioterapeuta e veja se está apto a praticar atividades e qual a mais apropriada para você.";
   static const orientation_answer6 =
-      "- Escolha um horário e crie o hábito de se pesar com roupas leves, isto deve ser feito diariamente."
-      "\n- O ganho de peso em excesso pode indicar Insuficiência Cardíaca descompensada.";
+      "Escolha um horário e crie o hábito de se pesar com roupas leves, isto deve ser feito diariamente."
+      "\n\nO ganho de peso em excesso pode indicar Insuficiência Cardíaca descompensada.";
   static const orientation_answer7 =
-      "- O cigarro contém substâncias tóxicas que provocam aumento do trabalho do coração."
-      "\n- A ingestão de bebidas alcoólicas deve ser eliminada, já que pode piorar a Insuficiência Cardíaca e"
+      "O cigarro contém substâncias tóxicas que provocam aumento do trabalho do coração."
+      "\n\nA ingestão de bebidas alcoólicas deve ser eliminada, já que pode piorar a Insuficiência Cardíaca e"
       " causar alterações no ritmo cardíaco.";
   static const orientation_answer8 =
-      "- Faça uma lista com todas as suas razões para parar de fumar"
-      "\n- Escolha uma data para começar  "
-      "\n- Mude hábitos que sempre te dão vontade de fumar  "
-      "\n- Se não conseguir parar de uma vez, vá diminuindo a quantidade diária, até parar completamente "
-      "\n- Procure fazer atividades que relaxem "
-      "\n- Não desista  "
-      "\n- Não se desespere, se tiver uma recaída "
-      "\n- Tenha força de vontade e recomece sempre "
-      "\n- Procure grupos de apoio  ";
+      "- Faça uma lista com todas as suas razões para parar de fumar;"
+      "\n- Escolha uma data para começar;"
+      "\n- Mude hábitos que sempre te dão vontade de fumar;"
+      "\n- Se não conseguir parar de uma vez, vá diminuindo a quantidade diária, até parar completamente;"
+      "\n- Procure fazer atividades que relaxem;"
+      "\n- Não desista;"
+      "\n- Não se desespere, se tiver uma recaída;"
+      "\n- Tenha força de vontade e recomece sempre;"
+      "\n- Procure grupos de apoio.";
   static const orientation_answer9 =
-      "- Tome os medicamentos conforme orientação e prescrição de seu médico.  "
-      "\n- Tome seu medicamento sempre no horário que foi orientado. "
-      "\n- Mesmo quando se sentir bem, continue fazendo o uso da medicação, isso significa um adequado controle de sua doença "
-      "\n- Não aumente, diminua ou pare de tomar os medicamentos sem orientação médica. ";
+      "- Tome os medicamentos conforme orientação e prescrição de seu médico;"
+      "\n- Tome seu medicamento sempre no horário que foi orientado;"
+      "\n- Mesmo quando se sentir bem, continue fazendo o uso da medicação, isso significa um adequado controle de sua doença;"
+      "\n- Não aumente, diminua ou pare de tomar os medicamentos sem orientação médica.";
   static const orientation_answer10 =
       "Participe das campanhas de vacinação contra influenza (gripe) e pneumococo (pneumonia). ";
   static const orientation_answer11 =
@@ -303,16 +310,16 @@ class Strings {
       "1.  Ansiedade e estresse são sentimentos comuns a todas as pessoas, porém se forem persistentes e interferirem "
       "nas atividades diárias ou nas relações com outras pessoas, devemos procurar ajuda. \n\n2. ";
   static const orientation_answer12_2 =
-      "\n- Procurar um Psicólogo, para tratar esses sentimentos"
-      "\n- Expresse suas emoções e sentimentos"
-      "\n- Se estiver mais angustiado, triste ou ansioso, busque conversar com pessoas que geralmente têm uma postura mais otimista frente às dificuldades."
-      "\n- Aceite apoio emocional quando oferecido e ofereça apoio sempre que puder"
-      "\n- Planeje atividades para o dia, que não sobrecarreguem seu corpo e mente."
-      "\n- Preencha seu tempo com informações otimistas e atividades prazerosas "
-      "\n- Não se isolar"
-      "\n- Realizar atividades que goste (Exemplo: ver filme, desenhar, bordar, cantar, ouvir música)"
-      "\n- Use técnicas de respiração e meditação"
-      "\n- Suporte religioso, caso tenha crença religiosa";
+      "\n- Procurar um Psicólogo, para tratar esses sentimentos;"
+      "\n- Expresse suas emoções e sentimentos;"
+      "\n- Se estiver mais angustiado, triste ou ansioso, busque conversar com pessoas que geralmente têm uma postura mais otimista frente às dificuldades;"
+      "\n- Aceite apoio emocional quando oferecido e ofereça apoio sempre que puder;"
+      "\n- Planeje atividades para o dia, que não sobrecarreguem seu corpo e mente;"
+      "\n- Preencha seu tempo com informações otimistas e atividades prazerosas;"
+      "\n- Não se isolar;"
+      "\n- Realizar atividades que goste (Exemplo: ver filme, desenhar, bordar, cantar, ouvir música);"
+      "\n- Use técnicas de respiração e meditação;"
+      "\n- Suporte religioso, caso tenha crença religiosa.";
   static const orientation_answer13 =
       "Tente dormir pelo menos 8 horas por dia. Além disso, repouse caso tenha feito atividades de esforço moderado ou esteja sentindo algum sintoma.";
   static const orientation_answer14 =
@@ -325,4 +332,37 @@ class Strings {
   static const empty_exercise = "Ainda não há exercícios recomendados";
   static const empty_liquid = "Ainda não há limite de líquidos registrado";
   static const empty_medication = "Ainda não há medicamentos prescritos";
+
+  // About Page
+  static const about1 = "Sobre";
+  static const about2 = "Colaboradores";
+  static const about2_1 = "Idealizadoras\n\n";
+  static const about2_2 = "\n\nDesenvolvedores\n\n";
+  static const about2_3 = "\n\nDesign de ícones\n\n";
+
+  static const about_answer1 =
+      "Card.IO é um aplicativo para monitoramento de pacientes com Insuficiência Cardíaca Crônica,"
+      " acompanhados em um Programa de Extensão da Univerdade Federal Fluminense,"
+      " denominado Clínica de Insuficiência Cardíaca Coração Valente."
+      "\nEste aplicativo tem como objetivo estimular o autocuidado, além de "
+      "favorecer o contato direto entre paciente e profissional de saúde."
+      "\n\n"
+      "Desenvolvido como projeto de Doutorado da Enfermeira Lyvia da Silva Figueiredo";
+  static const about_answer2_1 =
+      "- Enfermeira Doutoranda Lyvia da Silva Figueiredo\n"
+      " - Prof Dra Ana Carla Dantas Cavalcanti \n(Escola de Enfermagem/UFF)\n"
+      " - Prof Dra Paula Vanessa Peclat Flores \n(Escola de Enfermagem/UFF)";
+  static const about_answer2_2 = "Prof Dr Flávio Luis Seixas\n"
+      "(Instituto de computação/UFF)\n   - José Paulo de Mello Gomes"
+      "\n(Instituto de computação/UFF)\n"
+      " - Kelly Maria Augusta Tavares Bentes"
+      "\n(Instituto de computação/UFF)\n"
+      " - Artur Ladeira Andrade"
+      "\n(Instituto de computação/UFF)\n"
+      " - Larissa Martins dos Blanco"
+      "\n(Instituto de computação/UFF)\n"
+      " - James Adler Wonghon S. de Sousa"
+      "\n(Instituto de Engenharia Naval/UEA)\n";
+  static const about_answer2_3 = "Danilo Corrêa\n"
+      "(Escola de Enfermagem/UFF)\n";
 }
