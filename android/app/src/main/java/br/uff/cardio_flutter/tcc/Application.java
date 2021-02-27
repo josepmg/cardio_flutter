@@ -1,4 +1,4 @@
-package br.uff.cardio_flutter;
+package br.uff.cardio_flutter.tcc;
 
 import io.flutter.app.FlutterApplication;
 import io.flutter.plugin.common.PluginRegistry;

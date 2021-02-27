@@ -1,4 +1,4 @@
-package br.uff.cardio_flutter
+package br.uff.cardio_flutter.tcc
 
 import android.os.Bundle
 
