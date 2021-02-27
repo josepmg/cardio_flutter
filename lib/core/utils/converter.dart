@@ -1,12 +1,4 @@
 import 'package:cardio_flutter/core/error/failure.dart';
-import 'package:cardio_flutter/core/utils/date_helper.dart';
-import 'package:cardio_flutter/features/calendar/presentation/models/activity.dart';
-import 'package:cardio_flutter/features/calendar/presentation/models/calendar.dart' as calendar;
-import 'package:cardio_flutter/features/calendar/presentation/models/day.dart';
-import 'package:cardio_flutter/features/calendar/presentation/models/month.dart' as month;
-import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
-import 'package:cardio_flutter/resources/arrays.dart';
-import 'package:cardio_flutter/resources/keys.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -41,7 +33,11 @@ class Converter {
     return string;
   }
 
-  static String convertStringToMaskedString({@required String value, @required String mask, String escapeCharacter = "#", bool onlyDigits}) {
+  static String convertStringToMaskedString(
+      {@required String value,
+      @required String mask,
+      String escapeCharacter = "#",
+      bool onlyDigits}) {
     if (value == null || mask == null) return "";
     value = cleanText(value, onlyDigits: onlyDigits);
     int i = 0;
@@ -74,11 +70,19 @@ class Converter {
     else
       mask = (changeMask(value)) ? maskSecundary : maskDefault;
 
-    return convertStringToMaskedString(value: value, mask: mask, escapeCharacter: escapeCharacter, onlyDigits: onlyDigits);
+    return convertStringToMaskedString(
+        value: value,
+        mask: mask,
+        escapeCharacter: escapeCharacter,
+        onlyDigits: onlyDigits);
   }
 
   static String cleanText(String text, {bool onlyDigits}) {
-    text = text.replaceAll(".", "").replaceAll("-", "").replaceAll(" ", "").replaceAll(":", "");
+    text = text
+        .replaceAll(".", "")
+        .replaceAll("-", "")
+        .replaceAll(" ", "")
+        .replaceAll(":", "");
     if (onlyDigits != null && onlyDigits) {
       for (int i = 0; i < text.length; i++) {
         if (int.tryParse(text[i]) == null) {
@@ -90,18 +94,26 @@ class Converter {
     return text;
   }
 
-
-
-  static String symptom(bool symptom) {
-    String string;
-    if (symptom == null) {
-      return null;
-    } else {
-      (symptom == true) ? string = "Houve" : string = "Não houve";
-      return string;
+  static String symptom(List<String> symptomList) {
+    if (symptomList == null)
+      return "";
+    else {
+      String result = "";
+      if (symptomList.isEmpty)
+        result = "Sem sintomas";
+      else
+        for (int i = 0; i < symptomList.length; i++) {
+          result += symptomList[i];
+          if (i == (symptomList.length - 1))
+            result += ".";
+          else if (i == (symptomList.length - 2))
+            result += " e ";
+          else
+            result += ", ";
+        }
+      return result;
     }
   }
-
 
   static String getDateAsString(DateTime date) {
     if (date == null) return null;
