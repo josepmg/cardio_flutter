@@ -31,7 +31,6 @@ class LiquidPage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => AddLiquidPage()));
         }
       },
-      backgroundColor: Color(0xffc9fffd),
       body: BlocListener<GenericBloc<Liquid>, GenericState<Liquid>>(
         listener: (context, state) {
           if (state is Error<Liquid>) {

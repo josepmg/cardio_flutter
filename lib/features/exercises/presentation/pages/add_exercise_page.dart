@@ -88,7 +88,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
   Widget build(BuildContext context) {
     // print(widget.exercise.id);
     return BasePage(
-      backgroundColor: Color(0xffc9fffd),
       body: SingleChildScrollView(
         child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
           listener: (context, state) {

@@ -31,7 +31,6 @@ class BiometricPage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => AddBiometricPage()));
         }
       },
-      backgroundColor: Color(0xffc9fffd),
       body: BlocListener<GenericBloc<Biometric>, GenericState<Biometric>>(
         listener: (context, state) {
           if (state is Error<Biometric>) {

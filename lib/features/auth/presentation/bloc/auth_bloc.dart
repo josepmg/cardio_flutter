@@ -10,6 +10,7 @@ import 'package:cardio_flutter/features/auth/domain/entities/patient.dart';
 import 'package:cardio_flutter/features/auth/domain/entities/professional.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/get_current_user.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_in.dart' as sign_in;
+import 'package:cardio_flutter/features/auth/domain/usecases/sign_out.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_up_patient.dart' as sign_patient;
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_up_professional.dart' as sign_professional;
 import 'package:dartz/dartz.dart';
@@ -26,12 +27,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final sign_patient.SignUpPatient signUpPatient;
   final sign_professional.SignUpProfessional signUpProfessional;
   final GetCurrentUser getCurrentUser;
+  final SignOut signOut;
 
-  AuthBloc({@required this.signIn, @required this.signUpPatient, @required this.signUpProfessional, @required this.getCurrentUser})
-      : assert(signIn != null),
+  AuthBloc({
+    @required this.signIn,
+    @required this.signUpPatient,
+    @required this.signUpProfessional,
+    @required this.getCurrentUser,
+    @required this.signOut,
+  })  : assert(signIn != null),
         assert(signUpPatient != null),
         assert(signUpProfessional != null),
-        assert(getCurrentUser != null) {
+        assert(getCurrentUser != null),
+        assert(signOut != null) {
     this.add(GetUserStatusEvent());
   }
 
@@ -60,6 +68,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (event is GetUserStatusEvent) {
       var userOrFailure = await getCurrentUser(NoParams());
       yield* _eitherLoggedOrErrorState(userOrFailure);
+    } else if (event is SignOutEvent) {
+      yield Loading();
+      await signOut(NoParams());
+      yield Empty();
     }
   }
 

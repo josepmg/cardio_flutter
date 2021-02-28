@@ -132,9 +132,7 @@ class AuthRepositoryImpl implements AuthRepository {
         if (user != null) {
           await localDataSource.saveUserId(user.id);
           await localDataSource.saveUserType(type);
-
           notificationManager.init();
-
           return Right(user);
         } else {
           return Left(ServerFailure());
@@ -150,6 +148,15 @@ class AuthRepositoryImpl implements AuthRepository {
       }
     } else {
       return Left(NoInternetConnectionFailure());
+    }
+  }
+  @override
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      await localDataSource.signOut();
+      return Right(await remoteDataSource.signOut());
+    } on CacheException {
+      return Left(CacheFailure());
     }
   }
 }

@@ -90,8 +90,6 @@ class _ProfessionalSignUpPageState extends State<ProfessionalSignUpPage> {
   Widget _buildForm(BuildContext context) {
     return BasePage(
         key: _scaffoldKey,
-        signOutButton: false,
-        backgroundColor: Color(0xffc9fffd),
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,

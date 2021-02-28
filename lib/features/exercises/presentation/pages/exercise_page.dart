@@ -31,7 +31,6 @@ class ExercisePage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => AddExercisePage()));
         }
       },
-      backgroundColor: Color(0xffc9fffd),
       body: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
         listener: (context, state) {
           if (state is Error<Exercise>) {
