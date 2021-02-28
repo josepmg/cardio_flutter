@@ -32,6 +32,7 @@ class Strings {
   static const specialty = "Especialidade";
 
   // Home Page
+  static const home_professional_page_title = "Página inicial";
   static const new_patient = "  Cadastrar novo paciente";
   static const cpf_number = ": 333.333.333-33\n";
   static const adress = "Endereço";

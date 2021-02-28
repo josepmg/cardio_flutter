@@ -2,7 +2,6 @@ import 'package:cardio_flutter/core/widgets/loading_widget.dart';
 import 'package:cardio_flutter/features/auth/domain/entities/patient.dart';
 import 'package:cardio_flutter/features/auth/domain/entities/professional.dart';
 import 'package:cardio_flutter/features/auth/presentation/pages/basePage.dart';
-import 'package:cardio_flutter/features/manage_professional/presentation/pages/edit_professional_page.dart';
 import 'package:cardio_flutter/features/manage_professional/presentation/bloc/manage_professional_bloc.dart';
 import 'package:cardio_flutter/features/manage_professional/presentation/widgets/patient_tile.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +39,7 @@ class HomeProfessionalPage extends StatelessWidget {
   Widget _buildBody(BuildContext context, Professional professional,
       List<Patient> patientList) {
     return BasePage(
+      recomendation: Strings.home_professional_page_title,
       body: Container(
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(

@@ -25,7 +25,7 @@ class BasePage extends StatelessWidget {
     Key key,
     this.body,
     this.addFunction,
-    this.recomendation,
+    this.recomendation = "",
     this.hasDrawer = false,
     this.patient,
   }) : super(key: key);
