@@ -63,7 +63,8 @@ class _CustomTextTimeFormFieldState extends State<CustomTextTimeFormField> {
           ),
           Container(
             width: Dimensions.getConvertedWidthSize(context, 70),
-            child: TextFormField(textAlign: TextAlign.center,
+            child: TextFormField(
+              textAlign: TextAlign.center,
               controller: widget.textEditingController,
               style: TextStyle(
                 color: Colors.black,
