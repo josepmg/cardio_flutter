@@ -17,7 +17,8 @@ import 'package:cardio_flutter/features/manage_professional/presentation/bloc/ma
 class EditProfessionalPage extends StatefulWidget {
   final Professional professional;
 
-  const EditProfessionalPage({@required this.professional}) : assert(professional != null);
+  const EditProfessionalPage({@required this.professional})
+      : assert(professional != null);
   @override
   _EditProfessionalPageState createState() => _EditProfessionalPageState();
 }
@@ -47,7 +48,8 @@ class _EditProfessionalPageState extends State<EditProfessionalPage> {
 
   @override
   void initState() {
-    _formData[LABEL_CPF] = Converter.convertStringToMaskedString(value: widget.professional.cpf, mask: '###.###.###-##');
+    _formData[LABEL_CPF] = Converter.convertStringToMaskedString(
+        value: widget.professional.cpf, mask: '###.###.###-##');
     _formData[LABEL_NAME] = widget.professional.name;
     _formData[LABEL_EXPERTISE] = widget.professional.expertise;
     _formData[LABEL_REGIONAL_REGISTER] = widget.professional.regionalRecord;
@@ -87,80 +89,78 @@ class _EditProfessionalPageState extends State<EditProfessionalPage> {
 
   Widget _buildForm(BuildContext context) {
     return BasePage(
-        signOutButton: false,
-        backgroundColor: Color(0xffc9fffd),
         body: SingleChildScrollView(
             child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 15),
-              ),
-              CustomTextFormField(
-                textEditingController: _nameController,
-                isRequired: true,
-                hintText: Strings.name_hint,
-                title: Strings.name_title,
-                textCapitalization: TextCapitalization.words,
-                onChanged: (value) {
-                  setState(() {
-                    _formData[LABEL_NAME] = value;
-                  });
-                },
-              ),
-              CustomTextFormField(
-                textEditingController: _cpfController,
-                isRequired: true,
-                keyboardType: TextInputType.number,
-                validator: CpfInputValidator(),
-                hintText: Strings.cpf_hint,
-                title: Strings.cpf_title,
-                onChanged: (value) {
-                  setState(() {
-                    _formData[LABEL_CPF] = value;
-                  });
-                },
-              ),
-              CustomTextFormField(
-                textEditingController: _regionalRegisterController,
-                isRequired: true,
-                hintText: "",
-                title: Strings.register,
-                onChanged: (value) {
-                  setState(() {
-                    _formData[LABEL_REGIONAL_REGISTER] = value;
-                  });
-                },
-              ),
-              CustomTextFormField(
-                textEditingController: _expertiseController,
-                isRequired: true,
-                hintText: "",
-                title: Strings.specialty,
-                onChanged: (value) {
-                  setState(() {
-                    _formData[LABEL_EXPERTISE] = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 20),
-              ),
-              Button(
-                onTap: () {
-                  _submitForm();
-                },
-                title: Strings.edit_patient_done,
-              ),
-              SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 20),
-              ),
-            ],
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            height: Dimensions.getConvertedHeightSize(context, 15),
           ),
-        )));
+          CustomTextFormField(
+            textEditingController: _nameController,
+            isRequired: true,
+            hintText: Strings.name_hint,
+            title: Strings.name_title,
+            textCapitalization: TextCapitalization.words,
+            onChanged: (value) {
+              setState(() {
+                _formData[LABEL_NAME] = value;
+              });
+            },
+          ),
+          CustomTextFormField(
+            textEditingController: _cpfController,
+            isRequired: true,
+            keyboardType: TextInputType.number,
+            validator: CpfInputValidator(),
+            hintText: Strings.cpf_hint,
+            title: Strings.cpf_title,
+            onChanged: (value) {
+              setState(() {
+                _formData[LABEL_CPF] = value;
+              });
+            },
+          ),
+          CustomTextFormField(
+            textEditingController: _regionalRegisterController,
+            isRequired: true,
+            hintText: "",
+            title: Strings.register,
+            onChanged: (value) {
+              setState(() {
+                _formData[LABEL_REGIONAL_REGISTER] = value;
+              });
+            },
+          ),
+          CustomTextFormField(
+            textEditingController: _expertiseController,
+            isRequired: true,
+            hintText: "",
+            title: Strings.specialty,
+            onChanged: (value) {
+              setState(() {
+                _formData[LABEL_EXPERTISE] = value;
+              });
+            },
+          ),
+          SizedBox(
+            height: Dimensions.getConvertedHeightSize(context, 20),
+          ),
+          Button(
+            onTap: () {
+              _submitForm();
+            },
+            title: Strings.edit_patient_done,
+          ),
+          SizedBox(
+            height: Dimensions.getConvertedHeightSize(context, 20),
+          ),
+        ],
+      ),
+    )));
   }
 
   @override

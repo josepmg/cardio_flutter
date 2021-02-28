@@ -20,6 +20,8 @@ abstract class AuthRemoteDataSource {
       ProfessionalModel professionalModel, String password);
 
   Future<dynamic> getCurrentUser();
+
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -196,6 +198,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       print("[AuthRemoteDataSourceImpl] ${e.toString()}");
       throw ServerException();
+    }
+  }
+  @override
+  Future<void> signOut() {
+    try {
+      return firebaseAuth.signOut();
+    } catch (e) {
+      throw e;
     }
   }
 }

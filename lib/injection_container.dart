@@ -1,24 +1,37 @@
+import 'package:cardio_flutter/core/platform/network_info.dart';
 import 'package:cardio_flutter/core/platform/settings.dart';
 import 'package:cardio_flutter/features/appointments/data/models/appointment_model.dart';
 import 'package:cardio_flutter/features/appointments/domain/entities/appointment.dart';
+import 'package:cardio_flutter/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:cardio_flutter/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:cardio_flutter/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:cardio_flutter/features/auth/domain/repositories/auth_repository.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/get_current_user.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_in.dart';
+import 'package:cardio_flutter/features/auth/domain/usecases/sign_out.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_up_patient.dart';
 import 'package:cardio_flutter/features/auth/domain/usecases/sign_up_professional.dart';
+import 'package:cardio_flutter/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cardio_flutter/features/biometrics/data/models/biometric_model.dart';
 import 'package:cardio_flutter/features/biometrics/domain/entities/biometric.dart';
+import 'package:cardio_flutter/features/exercises/data/models/exercise_model.dart';
+import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
+import 'package:cardio_flutter/features/generic_feature/data/datasources/generic_remote_data_source.dart';
 import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
 import 'package:cardio_flutter/features/generic_feature/data/repositories/generic_repository_impl.dart';
+import 'package:cardio_flutter/features/generic_feature/domain/repositories/generic_repository.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/usecases/add_recomendation.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/usecases/delete.dart';
+import 'package:cardio_flutter/features/generic_feature/domain/usecases/edit_executed.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/usecases/edit_recomendation.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/usecases/execute.dart';
+import 'package:cardio_flutter/features/generic_feature/domain/usecases/get_list.dart';
 import 'package:cardio_flutter/features/generic_feature/presentation/bloc/generic_bloc.dart';
 import 'package:cardio_flutter/features/liquids/data/models/liquid_model.dart';
 import 'package:cardio_flutter/features/liquids/domain/entities/liquid.dart';
 import 'package:cardio_flutter/features/manage_professional/data/datasources/manage_professional_remote_data_source.dart';
+import 'package:cardio_flutter/features/manage_professional/data/repositories/manage_professional_repository_impl.dart';
+import 'package:cardio_flutter/features/manage_professional/domain/repositories/manage_professional_repository.dart';
 import 'package:cardio_flutter/features/manage_professional/domain/usecases/delete_patient_list.dart';
 import 'package:cardio_flutter/features/manage_professional/domain/usecases/edit_patient.dart';
 import 'package:cardio_flutter/features/manage_professional/domain/usecases/edit_professional.dart';
@@ -114,6 +127,7 @@ void _initAuth() {
       signUpPatient: sl(),
       signUpProfessional: sl(),
       getCurrentUser: sl(),
+      signOut: sl(),
     ),
   );
 
@@ -122,6 +136,7 @@ void _initAuth() {
   sl.registerLazySingleton(() => SignUpPatient(sl()));
   sl.registerLazySingleton(() => SignIn(sl()));
   sl.registerLazySingleton(() => GetCurrentUser(sl()));
+  sl.registerLazySingleton(() => SignOut(sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -384,4 +399,8 @@ void _initMedication() {
       firebaseTag: "Medication",
     ),
   );
+}
+void reset() {
+  sl.reset();
+  init();
 }

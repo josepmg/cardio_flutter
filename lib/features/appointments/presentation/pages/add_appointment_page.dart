@@ -64,7 +64,6 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      backgroundColor: Color(0xffc9fffd),
       body: SingleChildScrollView(
         child: BlocListener<GenericBloc<Appointment>, GenericState<Appointment>>(
           listener: (context, state) {

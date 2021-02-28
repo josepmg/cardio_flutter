@@ -69,7 +69,6 @@ class _AddBiometricPageState extends State<AddBiometricPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      backgroundColor: Color(0xffc9fffd),
       body: SingleChildScrollView(
         child: BlocListener<GenericBloc<Biometric>, GenericState<Biometric>>(
           listener: (context, state) {

@@ -60,7 +60,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
       _formData[LABEL_EXCESSIVE_FATIGUE] = widget.exercise.excessiveFatigue;
       _formData[LABEL_DIZZINESS] = widget.exercise.dizziness;
       _formData[LABEL_BODY_PAIN] = widget.exercise.bodyPain;
-      _formData[LABEL_EXECUTED_DATE] = DateHelper.getTimeFromDate(widget.exercise.executedDate);
+      _formData[LABEL_EXECUTED_DATE] =
+          DateHelper.getTimeFromDate(widget.exercise.executedDate);
     } else {
       _formData[LABEL_SHORTNESS_OF_BREATH] = false;
       _formData[LABEL_EXCESSIVE_FATIGUE] = false;
@@ -86,7 +87,6 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      backgroundColor: Color(0xffc9fffd),
       body: SingleChildScrollView(
         child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
           listener: (context, state) {
@@ -143,7 +143,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 subtitle: _formData[LABEL_INTENSITY],
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_INTENSITY] = Arrays.intensities.keys.toList()[value];
+                    _formData[LABEL_INTENSITY] =
+                        Arrays.intensities.keys.toList()[value];
                   });
                 },
               ),
@@ -189,7 +190,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 },
                 title: Text(
                   Strings.shortness_of_breath,
-                  style: TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
+                  style:
+                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
                 ),
               ),
               CheckboxListTile(
@@ -202,7 +204,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 },
                 title: Text(
                   Strings.excessive_fatigue,
-                  style: TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
+                  style:
+                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
                 ),
               ),
               CheckboxListTile(
@@ -215,7 +218,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 },
                 title: Text(
                   Strings.dizziness,
-                  style: TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
+                  style:
+                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
                 ),
               ),
               CheckboxListTile(
@@ -228,7 +232,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 },
                 title: Text(
                   Strings.body_pain,
-                  style: TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
+                  style:
+                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
                 ),
               ),
               CustomTextFormField(
@@ -245,7 +250,9 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                 height: Dimensions.getConvertedHeightSize(context, 20),
               ),
               Button(
-                title: (!widget.exercise.done) ? Strings.add : Strings.edit_patient_done,
+                title: (!widget.exercise.done)
+                    ? Strings.add
+                    : Strings.edit_patient_done,
                 onTap: () {
                   _submitForm(context);
                 },
@@ -261,7 +268,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
   void _submitForm(context) {
     if (!_formKey.currentState.validate()) {
       return;
-    } else if (_formData[LABEL_INTENSITY] == null || Arrays.intensities[_formData[LABEL_INTENSITY]] == null) {
+    } else if (_formData[LABEL_INTENSITY] == null ||
+        Arrays.intensities[_formData[LABEL_INTENSITY]] == null) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("Favor selecionar a intensidade"),
@@ -283,7 +291,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
             bodyPain: _formData[LABEL_BODY_PAIN],
             intensity: _formData[LABEL_INTENSITY],
             excessiveFatigue: _formData[LABEL_EXCESSIVE_FATIGUE],
-            executedDate:  DateHelper.addTimeToCurrentDate(_formData[LABEL_EXECUTED_DATE]),
+            executedDate:
+                DateHelper.addTimeToCurrentDate(_formData[LABEL_EXECUTED_DATE]),
             observation: _formData[LABEL_OBSERVATION],
           ),
         ),
@@ -301,7 +310,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
             bodyPain: _formData[LABEL_BODY_PAIN],
             intensity: _formData[LABEL_INTENSITY],
             excessiveFatigue: _formData[LABEL_EXCESSIVE_FATIGUE],
-            executedDate:  DateHelper.addTimeToCurrentDate(_formData[LABEL_EXECUTED_DATE]),
+            executedDate:
+                DateHelper.addTimeToCurrentDate(_formData[LABEL_EXECUTED_DATE]),
             observation: _formData[LABEL_OBSERVATION],
           ),
         ),
