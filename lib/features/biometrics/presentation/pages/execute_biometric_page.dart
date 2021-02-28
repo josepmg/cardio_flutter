@@ -1,6 +1,8 @@
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/utils/date_helper.dart';
 import 'package:cardio_flutter/core/utils/multimasked_text_controller.dart';
 import 'package:cardio_flutter/core/widgets/button.dart';
+import 'package:cardio_flutter/core/widgets/custom_dropdown_form_field.dart';
 import 'package:cardio_flutter/core/widgets/custom_text_form_field.dart';
 import 'package:cardio_flutter/core/widgets/loading_widget.dart';
 import 'package:cardio_flutter/features/auth/presentation/pages/basePage.dart';
@@ -10,8 +12,8 @@ import 'package:cardio_flutter/resources/arrays.dart';
 import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:cardio_flutter/core/widgets/custom_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_detector/focus_detector.dart';
 
 class ExecuteBiometricPage extends StatefulWidget {
   final Biometric biometric;
@@ -42,7 +44,8 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
     maskDefault: "##:##",
     onlyDigitsDefault: true,
   ).maskedTextFieldController;
-  TextEditingController _bloodPressureController = new MultimaskedTextController(
+  TextEditingController _bloodPressureController =
+      new MultimaskedTextController(
     escapeCharacter: "#",
     maskDefault: "##x##",
     onlyDigitsDefault: true,
@@ -55,14 +58,19 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
   @override
   void initState() {
     if (widget.biometric != null) {
-      _formData[LABEL_WEIGHT] = (widget.biometric.weight == null) ? null : widget.biometric.weight.toString();
-      _formData[LABEL_BPM] = (widget.biometric.bpm == null) ? null : widget.biometric.bpm.toString();
+      _formData[LABEL_WEIGHT] = (widget.biometric.weight == null)
+          ? null
+          : widget.biometric.weight.toString();
+      _formData[LABEL_BPM] = (widget.biometric.bpm == null)
+          ? null
+          : widget.biometric.bpm.toString();
       _formData[LABEL_BLOOD_PRESSURE] = widget.biometric.bloodPressure;
       _formData[LABEL_SWELLING] = widget.biometric.swelling;
       _formData[LABEL_SWELLING_LOC] = widget.biometric.swellingLocalization;
       _formData[LABEL_FATIGUE] = widget.biometric.fatigue;
       _formData[LABEL_OBSERVATION] = widget.biometric.observation;
-      _formData[LABEL_TIME] = DateHelper.getTimeFromDate(widget.biometric.executedDate);
+      _formData[LABEL_TIME] =
+          DateHelper.getTimeFromDate(widget.biometric.executedDate);
       _timeController.text = _formData[LABEL_TIME];
       _bloodPressureController.text = _formData[LABEL_BLOOD_PRESSURE];
     }
@@ -85,29 +93,39 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      body: SingleChildScrollView(
-        child: BlocListener<GenericBloc<Biometric>, GenericState<Biometric>>(
-          listener: (context, state) {
-            if (state is Error<Biometric>) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-            } else if (state is Loaded<Biometric>) {
-              Navigator.pop(context);
-            }
-          },
-          child: BlocBuilder<GenericBloc<Biometric>, GenericState<Biometric>>(
-            builder: (context, state) {
-              print(state);
-              if (state is Loading<Biometric>) {
-                return LoadingWidget(_buildForm(context));
-              } else {
-                return _buildForm(context);
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "ExecuteBiometricsPage"},
+        );
+      },
+      child: BasePage(
+        recomendation: Strings.biometric,
+        body: SingleChildScrollView(
+          child: BlocListener<GenericBloc<Biometric>, GenericState<Biometric>>(
+            listener: (context, state) {
+              if (state is Error<Biometric>) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              } else if (state is Loaded<Biometric>) {
+                Navigator.pop(context);
               }
             },
+            child: BlocBuilder<GenericBloc<Biometric>, GenericState<Biometric>>(
+              builder: (context, state) {
+                print(state);
+                if (state is Loading<Biometric>) {
+                  return LoadingWidget(_buildForm(context));
+                } else {
+                  return _buildForm(context);
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -115,7 +133,10 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return Form(
+    return Container(
+      padding: Dimensions.getEdgeInsets(context,
+          top: 10, left: 30, right: 30, bottom: 20),
+      child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -123,7 +144,7 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 10),
+                height: Dimensions.getConvertedHeightSize(context, 20),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -137,6 +158,9 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
                   });
                 },
               ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
+              ),
               CustomTextFormField(
                 isRequired: true,
                 keyboardType: TextInputType.number,
@@ -148,6 +172,9 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
                     _formData[LABEL_BPM] = value;
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -161,39 +188,32 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
                   });
                 },
               ),
-              CustomSelector(
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
+              ),
+              CustomDropdownFormField(
                 title: Strings.swelling,
-                options: Arrays.swelling.keys.toList(),
-                subtitle: _formData[LABEL_SWELLING],
+                dropDownList: Arrays.swelling.keys.toList(),
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_SWELLING] = Arrays.swelling.keys.toList()[value];
+                    _formData[LABEL_SWELLING] = Arrays.swelling['$value'];
                   });
                 },
               ),
-              (_formData[LABEL_SWELLING] == null || _formData[LABEL_SWELLING] == "Nenhum" || _formData[LABEL_SWELLING] == "Selecione")
-                  ? Container()
-                  : CustomTextFormField(
-                      isRequired: true,
-                      hintText: Strings.swelling_loc_hint,
-                      textEditingController: _swellingLocController,
-                      title: Strings.swelling_loc_title,
-                      enable: true,
-                      onChanged: (value) {
-                        setState(() {
-                          _formData[LABEL_SWELLING_LOC] = value;
-                        });
-                      },
-                    ),
-              CustomSelector(
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
+              ),
+              CustomDropdownFormField(
                 title: Strings.fatigue,
-                options: Arrays.fatigue.keys.toList(),
-                subtitle: _formData[LABEL_FATIGUE],
+                dropDownList: Arrays.fatigue.keys.toList(),
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_FATIGUE] = Arrays.fatigue.keys.toList()[value];
+                    _formData[LABEL_FATIGUE] = Arrays.fatigue['$value'];
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -206,6 +226,9 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
                     _formData[LABEL_TIME] = value;
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 textEditingController: _observationController,
@@ -221,7 +244,9 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
                 height: Dimensions.getConvertedHeightSize(context, 20),
               ),
               Button(
-                title: (!widget.biometric.done) ? Strings.add : Strings.edit_patient_done,
+                title: (!widget.biometric.done)
+                    ? Strings.add
+                    : Strings.edit_patient_done,
                 onTap: () {
                   _submitForm(context);
                 },
@@ -231,20 +256,24 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _submitForm(context) {
     if (!_formKey.currentState.validate()) {
       return;
-    } else if (_formData[LABEL_SWELLING] == null || Arrays.swelling[_formData[LABEL_SWELLING]] == null) {
+    } else if (_formData[LABEL_SWELLING] == null ||
+        Arrays.swelling[_formData[LABEL_SWELLING]] == null) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("Favor selecionar o inchaço"),
         ),
       );
       return;
-    } else if (_formData[LABEL_FATIGUE] == null || Arrays.fatigue[_formData[LABEL_FATIGUE]] == null) {
+    } else if (_formData[LABEL_FATIGUE] == null ||
+        Arrays.fatigue[_formData[LABEL_FATIGUE]] == null) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("Favor selecionar a fadiga"),
@@ -267,7 +296,8 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
             swelling: _formData[LABEL_SWELLING],
             fatigue: _formData[LABEL_FATIGUE],
             observation: _formData[LABEL_OBSERVATION],
-            executedDate: DateHelper.addTimeToCurrentDate(_formData[LABEL_TIME]),
+            executedDate:
+                DateHelper.addTimeToCurrentDate(_formData[LABEL_TIME]),
           ),
         ),
       );
@@ -284,7 +314,8 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
             swelling: _formData[LABEL_SWELLING],
             observation: _formData[LABEL_OBSERVATION],
             fatigue: _formData[LABEL_FATIGUE],
-            executedDate: DateHelper.addTimeToCurrentDate(_formData[LABEL_TIME]),
+            executedDate:
+                DateHelper.addTimeToCurrentDate(_formData[LABEL_TIME]),
           ),
         ),
       );
