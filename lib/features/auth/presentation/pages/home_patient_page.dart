@@ -114,10 +114,16 @@ class HomePatientPage extends StatelessWidget {
                 text: Strings.orientations,
                 image: Images.ico_orientations,
                 destination: () {
-                  Mixpanel.trackEvent(MixpanelEvents.READ_ORIENTATIONS);
-                  return Navigator.push(context, MaterialPageRoute(builder: (context) => OrientationsPage()));
+                   return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrientationsPage()),
+                    );
+                  // Mixpanel.trackEvent(MixpanelEvents.OPEN_HISTORY);
+                  // return Navigator.push(context, MaterialPageRoute(builder: (context) => OrientationsPage()));
                 },
               ),
+              /*
               ItemMenu(
                 text: Strings.about,
                 image: Images.ico_about,
@@ -139,6 +145,7 @@ class HomePatientPage extends StatelessWidget {
               SizedBox(
                 height: Dimensions.getConvertedHeightSize(context, 15),
               )
+              */
             ],
           ),
         ),
