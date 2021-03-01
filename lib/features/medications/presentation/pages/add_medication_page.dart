@@ -1,5 +1,5 @@
 import 'package:cardio_flutter/core/input_validators/date_input_validator.dart';
-import 'package:cardio_flutter/core/input_validators/time_of_day_validator.dart';
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/utils/converter.dart';
 import 'package:cardio_flutter/core/utils/date_helper.dart';
 import 'package:cardio_flutter/core/utils/multimasked_text_controller.dart';
@@ -15,6 +15,7 @@ import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_detector/focus_detector.dart';
 
 class AddMedicationPage extends StatefulWidget {
   final Medication medication;
@@ -103,29 +104,41 @@ class _AddMedicationPageState extends State<AddMedicationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      body: SingleChildScrollView(
-        child: BlocListener<GenericBloc<Medication>, GenericState<Medication>>(
-          listener: (context, state) {
-            if (state is Error<Medication>) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-            } else if (state is Loaded<Medication>) {
-              Navigator.pop(context);
-            }
-          },
-          child: BlocBuilder<GenericBloc<Medication>, GenericState<Medication>>(
-            builder: (context, state) {
-              print(state);
-              if (state is Loading<Medication>) {
-                return LoadingWidget(_buildForm(context));
-              } else {
-                return _buildForm(context);
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "AddMedicationPage"},
+        );
+      },
+      child: BasePage(
+        recomendation: Strings.medication,
+        body: SingleChildScrollView(
+          child:
+              BlocListener<GenericBloc<Medication>, GenericState<Medication>>(
+            listener: (context, state) {
+              if (state is Error<Medication>) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              } else if (state is Loaded<Medication>) {
+                Navigator.pop(context);
               }
             },
+            child:
+                BlocBuilder<GenericBloc<Medication>, GenericState<Medication>>(
+              builder: (context, state) {
+                print(state);
+                if (state is Loading<Medication>) {
+                  return LoadingWidget(_buildForm(context));
+                } else {
+                  return _buildForm(context);
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -133,7 +146,10 @@ class _AddMedicationPageState extends State<AddMedicationPage> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return Form(
+    return Container(
+      padding: Dimensions.getEdgeInsets(context,
+          top: 10, left: 30, right: 30, bottom: 20),
+      child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -251,7 +267,9 @@ class _AddMedicationPageState extends State<AddMedicationPage> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _submitForm() {
