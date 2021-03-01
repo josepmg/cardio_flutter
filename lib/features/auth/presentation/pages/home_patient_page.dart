@@ -20,13 +20,9 @@ import 'package:focus_detector/focus_detector.dart';
 
 class HomePatientPage extends StatefulWidget {
   final Patient patient;
-  final String patientName;
-  final String patientCpf;
 
   const HomePatientPage({
     @required this.patient,
-    this.patientName,
-    this.patientCpf,
   });
 
   @override
@@ -220,6 +216,8 @@ class _HomePatientPageState extends State<HomePatientPage> {
             ),
           ),
         ),
+        userName: widget.patient.name,
+        userCpf: widget.patient.cpf,
       ),
     );
   }

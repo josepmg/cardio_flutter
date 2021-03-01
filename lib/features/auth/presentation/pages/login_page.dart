@@ -79,8 +79,6 @@ class _LoginPageState extends State<LoginPage> {
               MaterialPageRoute(
                 builder: (context) => HomeProfessionalPage(
                   professional: state.professional,
-                  professionalName: state.professional.name,
-                  professionalCpf: state.professional.cpf,
                 ),
               ),
               (r) => false,
@@ -93,8 +91,6 @@ class _LoginPageState extends State<LoginPage> {
               MaterialPageRoute(
                 builder: (context) => HomePatientPage(
                   patient: state.patient,
-                  patientCpf: state.patient.cpf,
-                  patientName: state.patient.name,
                 ),
               ),
               (r) => false,

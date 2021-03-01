@@ -12,14 +12,10 @@ import 'package:flushbar/flushbar.dart';
 
 class HomeProfessionalPage extends StatelessWidget {
   final Professional professional;
-  final String professionalName;
-  final String professionalCpf;
 
   HomeProfessionalPage({
     Key key,
     this.professional,
-    this.professionalName,
-    this.professionalCpf,
   }) : super(key: key);
 
   @override
@@ -52,8 +48,8 @@ class HomeProfessionalPage extends StatelessWidget {
     return BasePage(
       hasDrawer: true,
       recomendation: Strings.home_professional_page_title,
-      userName: professionalName,
-      userCpf: professionalCpf,
+      userName: professional.name,
+      userCpf: professional.cpf,
       body: Container(
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(
