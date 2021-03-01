@@ -129,8 +129,8 @@ class CalendarConverter {
             "Horários Indicados":
                 Converter.convertStringListToString(entity.times),
             "Duração": "${entity.durationInMinutes} minutos",
-            'Data inicial': DateHelper.convertDateToString(entity.initialDate),
-            "Data final": DateHelper.convertDateToString(entity.finalDate)
+            "Data inicial": DateHelper.convertDateToString(entity.initialDate),
+            "Data final": DateHelper.convertDateToString(entity.finalDate),
           };
         } else {
           result = {
