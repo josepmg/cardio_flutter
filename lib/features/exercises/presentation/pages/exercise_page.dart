@@ -1,3 +1,4 @@
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/platform/settings.dart';
 import 'package:cardio_flutter/core/widgets/loading_widget.dart';
 import 'package:cardio_flutter/features/auth/domain/entities/patient.dart';
@@ -8,49 +9,62 @@ import 'package:cardio_flutter/features/calendar/presentation/models/day.dart';
 import 'package:cardio_flutter/features/calendar/presentation/models/month.dart';
 import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
 import 'package:cardio_flutter/features/exercises/presentation/pages/add_exercise_page.dart';
-import 'package:cardio_flutter/features/exercises/presentation/pages/execute_exercise_page.dart';
 import 'package:cardio_flutter/features/generic_feature/presentation/bloc/generic_bloc.dart';
 import 'package:cardio_flutter/features/generic_feature/presentation/widgets/empty_page.dart';
 import 'package:cardio_flutter/features/generic_feature/presentation/widgets/entity_card.dart';
 import 'package:cardio_flutter/resources/arrays.dart';
+import 'package:cardio_flutter/resources/cardio_colors.dart';
 import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/keys.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:provider/provider.dart';
+
+import 'execute_exercise_page.dart';
 
 class ExercisePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      addFunction: () {
-        if (Provider.of<Settings>(context, listen: false).getUserType() ==
-            Keys.PROFESSIONAL_TYPE) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddExercisePage()));
-        }
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "ExercisePage"},
+        );
       },
-      body: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
-        listener: (context, state) {
-          if (state is Error<Exercise>) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-              ),
-            );
+      child: BasePage(
+        recomendation: Strings.exercise,
+        addFunction: () {
+          if (Provider.of<Settings>(context, listen: false).getUserType() ==
+              Keys.PROFESSIONAL_TYPE) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddExercisePage()));
           }
         },
-        child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
-          builder: (context, state) {
-            if (state is Loading<Exercise>) {
-              return LoadingWidget(Container());
-            } else if (state is Loaded<Exercise>) {
-              return _bodybuilder(context, state.patient, state.calendar);
-            } else {
-              return _bodybuilder(context, null, null);
+        body: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
+          listener: (context, state) {
+            if (state is Error<Exercise>) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                ),
+              );
             }
           },
+          child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
+            builder: (context, state) {
+              if (state is Loading<Exercise>) {
+                return LoadingWidget(Container());
+              } else if (state is Loaded<Exercise>) {
+                return _bodybuilder(context, state.patient, state.calendar);
+              } else {
+                return _bodybuilder(context, null, null);
+              }
+            },
+          ),
         ),
       ),
     );
@@ -103,15 +117,24 @@ class ExercisePage extends StatelessWidget {
         return Column(
           children: <Widget>[
             Container(
+              padding: Dimensions.getEdgeInsets(context, bottom: 5),
+              alignment: Alignment.bottomLeft,
               decoration: BoxDecoration(
-                color: Colors.blue[900],
-                borderRadius: BorderRadius.circular(10),
+                color: CardioColors.white,
+                border: Border(
+                  bottom: BorderSide(
+                    color: CardioColors.black,
+                    width: Dimensions.getConvertedHeightSize(context, 1),
+                  ),
+                ),
               ),
-              height: Dimensions.getConvertedHeightSize(context, 50),
-              alignment: Alignment.center,
               child: Text(
                 "${Arrays.months[month.id - 1]} ${month.year}",
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(
+                  color: CardioColors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: Dimensions.getTextSize(context, 22),
+                ),
               ),
             ),
             SizedBox(
@@ -132,24 +155,31 @@ class ExercisePage extends StatelessWidget {
     dayList.sort((b, a) => a.id.compareTo(b.id));
     return Column(
       children: dayList.map((day) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              child: CircleAvatar(
-                backgroundColor: Colors.blue[900],
-                radius: 35,
+        return Container(
+          margin: Dimensions.getEdgeInsets(context, bottom: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: CardioColors.blue,
+                radius: Dimensions.getConvertedHeightSize(context, 25),
                 child: Text(
-                  (day.id.toString()),
-                  style: TextStyle(fontSize: 22),
+                  day.id.toString(),
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: CardioColors.white,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: Dimensions.getConvertedWidthSize(context, 15),
-            ),
-            Expanded(child: _buildExerciseList(context, day.activities)),
-          ],
+              SizedBox(
+                width: Dimensions.getConvertedWidthSize(context, 15),
+              ),
+              Expanded(
+                child: _buildExerciseList(context, day.activities),
+              ),
+            ],
+          ),
         );
       }).toList(),
     );

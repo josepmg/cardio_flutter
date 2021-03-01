@@ -1,3 +1,4 @@
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/utils/converter.dart';
 import 'package:cardio_flutter/core/utils/date_helper.dart';
 import 'package:cardio_flutter/core/input_validators/date_input_validator.dart';
@@ -15,6 +16,7 @@ import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cardio_flutter/core/widgets/custom_selector.dart';
+import 'package:focus_detector/focus_detector.dart';
 
 class AddExercisePage extends StatefulWidget {
   final Exercise exercise;
@@ -32,7 +34,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   static const String LABEL_FREQUENCY = "LABEL_FREQUENCY";
   static const String LABEL_INTENSITY = "LABEL_INTENSITY";
   static const String LABEL_DURATION = "LABEL_DURATION";
-  static const String LABEL_DATE = "LABEL_DATE";
+  static const String LABEL_INITIAL_DATE = "LABEL_INITIAL_DATE";
   static const String LABEL_FINAL_DATE = "LABEL_FINAL_DATE";
   static const String LABEL_TIMES = "LABEL_TIMES";
 
@@ -48,8 +50,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     maskDefault: "##/##/####",
     onlyDigitsDefault: true,
   ).maskedTextFieldController;
-  final TextEditingController _finalDateController =
-      new MultimaskedTextController(
+  TextEditingController _finalDateController = new MultimaskedTextController(
     maskDefault: "##/##/####",
     onlyDigitsDefault: true,
   ).maskedTextFieldController;
@@ -62,12 +63,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
       _formData[LABEL_INTENSITY] = widget.exercise.intensity;
       _formData[LABEL_TIMES] = widget.exercise.times;
       _formData[LABEL_DURATION] = widget.exercise.durationInMinutes.toString();
-      _formData[LABEL_DATE] =
+      _formData[LABEL_INITIAL_DATE] =
           DateHelper.convertDateToString(widget.exercise.initialDate);
       _formData[LABEL_FINAL_DATE] =
           DateHelper.convertDateToString(widget.exercise.finalDate);
-
-      _initialDateController.text = _formData[LABEL_DATE];
+      _initialDateController.text = _formData[LABEL_INITIAL_DATE];
       _finalDateController.text = _formData[LABEL_FINAL_DATE];
     }
     _nameController = TextEditingController(
@@ -86,30 +86,38 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.exercise.id);
-    return BasePage(
-      body: SingleChildScrollView(
-        child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
-          listener: (context, state) {
-            if (state is Error<Exercise>) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-            } else if (state is Loaded<Exercise>) {
-              Navigator.pop(context);
-            }
-          },
-          child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
-            builder: (context, state) {
-              print(state);
-              if (state is Loading<Exercise>) {
-                return LoadingWidget(_buildForm(context));
-              } else {
-                return _buildForm(context);
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "AddExercisePage"},
+        );
+      },
+      child: BasePage(
+        recomendation: Strings.exercise,
+        body: SingleChildScrollView(
+          child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
+            listener: (context, state) {
+              if (state is Error<Exercise>) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              } else if (state is Loaded<Exercise>) {
+                Navigator.pop(context);
               }
             },
+            child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
+              builder: (context, state) {
+                if (state is Loading<Exercise>) {
+                  return LoadingWidget(_buildForm(context));
+                } else {
+                  return _buildForm(context);
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -117,7 +125,10 @@ class _AddExercisePageState extends State<AddExercisePage> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return Form(
+    return Container(
+      padding: Dimensions.getEdgeInsets(context,
+          top: 10, left: 30, right: 30, bottom: 20),
+      child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -191,10 +202,10 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 keyboardType: TextInputType.number,
                 validator: DateInputValidator(),
                 hintText: Strings.date,
-                title: Strings.executed_date,
+                title: Strings.initial_date,
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_DATE] = value;
+                    _formData[LABEL_INITIAL_DATE] = value;
                   });
                 },
               ),
@@ -204,7 +215,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 keyboardType: TextInputType.number,
                 validator: DateInputValidator(),
                 hintText: Strings.date,
-                title: Strings.final_date_optional,
+                title: Strings.final_date,
                 onChanged: (value) {
                   setState(() {
                     _formData[LABEL_FINAL_DATE] = value;
@@ -227,7 +238,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _submitForm(context) {
@@ -257,17 +270,16 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 .toList(),
             intensity: _formData[LABEL_INTENSITY],
             frequency: int.parse(_formData[LABEL_FREQUENCY]),
-            // frequencyPerWeek: int.parse(_formData[LABEL_FREQUENCY_PERWEEK]),
-            finalDate: _formData[LABEL_FINAL_DATE] == null ||
-                    _formData[LABEL_FINAL_DATE] == ''
-                ? DateHelper.convertStringToDate(_formData[LABEL_DATE])
-                : DateHelper.convertStringToDate(_formData[LABEL_FINAL_DATE]),
-            initialDate: DateHelper.convertStringToDate(_formData[LABEL_DATE]),
+            finalDate: _formData[LABEL_FINAL_DATE] != null &&
+                    _formData[LABEL_FINAL_DATE] != ""
+                ? DateHelper.convertStringToDate(_formData[LABEL_FINAL_DATE])
+                : DateHelper.convertStringToDate(_formData[LABEL_INITIAL_DATE]),
+            initialDate:
+                DateHelper.convertStringToDate(_formData[LABEL_INITIAL_DATE]),
           ),
         ),
       );
     } else {
-      print('2:${widget.exercise.id}');
       BlocProvider.of<GenericBloc<Exercise>>(context).add(
         EditRecomendationEvent<Exercise>(
           entity: Exercise(
@@ -281,12 +293,12 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 .toList(),
             intensity: _formData[LABEL_INTENSITY],
             frequency: int.parse(_formData[LABEL_FREQUENCY]),
-            // frequencyPerWeek: int.parse(_formData[LABEL_FREQUENCY_PERWEEK]),
-            finalDate: _formData[LABEL_FINAL_DATE] == null ||
-                    _formData[LABEL_FINAL_DATE] == ''
-                ? DateHelper.convertStringToDate(_formData[LABEL_DATE])
-                : DateHelper.convertStringToDate(_formData[LABEL_FINAL_DATE]),
-            initialDate: DateHelper.convertStringToDate(_formData[LABEL_DATE]),
+            finalDate: _formData[LABEL_FINAL_DATE] != null &&
+                    _formData[LABEL_FINAL_DATE] != ""
+                ? DateHelper.convertStringToDate(_formData[LABEL_FINAL_DATE])
+                : DateHelper.convertStringToDate(_formData[LABEL_INITIAL_DATE]),
+            initialDate:
+                DateHelper.convertStringToDate(_formData[LABEL_INITIAL_DATE]),
           ),
         ),
       );

@@ -1,24 +1,29 @@
 import 'package:cardio_flutter/core/input_validators/time_of_day_validator.dart';
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/utils/date_helper.dart';
 import 'package:cardio_flutter/core/utils/multimasked_text_controller.dart';
 import 'package:cardio_flutter/core/widgets/button.dart';
+import 'package:cardio_flutter/core/widgets/custom_check_item.dart';
+import 'package:cardio_flutter/core/widgets/custom_dropdown_form_field.dart';
 import 'package:cardio_flutter/core/widgets/custom_text_form_field.dart';
 import 'package:cardio_flutter/core/widgets/loading_widget.dart';
 import 'package:cardio_flutter/features/auth/presentation/pages/basePage.dart';
 import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
 import 'package:cardio_flutter/features/generic_feature/presentation/bloc/generic_bloc.dart';
 import 'package:cardio_flutter/resources/arrays.dart';
+import 'package:cardio_flutter/resources/cardio_colors.dart';
 import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:meta/meta.dart';
-import 'package:cardio_flutter/core/widgets/custom_selector.dart';
 
 class ExecuteExercisePage extends StatefulWidget {
   final Exercise exercise;
 
   const ExecuteExercisePage({@required this.exercise});
+
   @override
   State<StatefulWidget> createState() {
     return _ExecuteExercisePageState();
@@ -54,14 +59,14 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
     _formData[LABEL_OBSERVATION] = widget.exercise.observation;
     _formData[LABEL_INTENSITY] = widget.exercise.intensity.toString();
     _formData[LABEL_DURATION] = widget.exercise.durationInMinutes.toString();
+    _formData[LABEL_EXECUTED_DATE] =
+        DateHelper.getTimeFromDate(widget.exercise.executedDate);
 
     if (widget.exercise.done) {
       _formData[LABEL_SHORTNESS_OF_BREATH] = widget.exercise.shortnessOfBreath;
       _formData[LABEL_EXCESSIVE_FATIGUE] = widget.exercise.excessiveFatigue;
       _formData[LABEL_DIZZINESS] = widget.exercise.dizziness;
       _formData[LABEL_BODY_PAIN] = widget.exercise.bodyPain;
-      _formData[LABEL_EXECUTED_DATE] =
-          DateHelper.getTimeFromDate(widget.exercise.executedDate);
     } else {
       _formData[LABEL_SHORTNESS_OF_BREATH] = false;
       _formData[LABEL_EXCESSIVE_FATIGUE] = false;
@@ -86,28 +91,38 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      body: SingleChildScrollView(
-        child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
-          listener: (context, state) {
-            if (state is Error<Exercise>) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-            } else if (state is Loaded<Exercise>) {
-              Navigator.pop(context);
-            }
-          },
-          child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
-            builder: (context, state) {
-              if (state is Loading<Exercise>) {
-                return LoadingWidget(_buildForm(context));
-              } else {
-                return _buildForm(context);
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "ExecuteExercisePage"},
+        );
+      },
+      child: BasePage(
+        recomendation: Strings.exercise,
+        body: SingleChildScrollView(
+          child: BlocListener<GenericBloc<Exercise>, GenericState<Exercise>>(
+            listener: (context, state) {
+              if (state is Error<Exercise>) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              } else if (state is Loaded<Exercise>) {
+                Navigator.pop(context);
               }
             },
+            child: BlocBuilder<GenericBloc<Exercise>, GenericState<Exercise>>(
+              builder: (context, state) {
+                if (state is Loading<Exercise>) {
+                  return LoadingWidget(_buildForm(context));
+                } else {
+                  return _buildForm(context);
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -115,7 +130,10 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return Form(
+    return Container(
+      padding: Dimensions.getEdgeInsets(context,
+          top: 10, left: 30, right: 30, bottom: 20),
+      child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -123,13 +141,13 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 10),
+                height: Dimensions.getConvertedHeightSize(context, 20),
               ),
               CustomTextFormField(
                 textCapitalization: TextCapitalization.words,
                 isRequired: true,
                 textEditingController: _nameController,
-                hintText: "",
+                hintText: Strings.phycical_activity_hint,
                 title: Strings.phycical_activity,
                 onChanged: (value) {
                   setState(() {
@@ -137,16 +155,20 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                   });
                 },
               ),
-              CustomSelector(
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
+              ),
+              CustomDropdownFormField(
                 title: Strings.intensity,
-                options: Arrays.intensities.keys.toList(),
-                subtitle: _formData[LABEL_INTENSITY],
+                dropDownList: Arrays.intensities.keys.toList(),
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_INTENSITY] =
-                        Arrays.intensities.keys.toList()[value];
+                    _formData[LABEL_INTENSITY] = Arrays.intensities['$value'];
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -159,6 +181,9 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
                     _formData[LABEL_DURATION] = value.toString();
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -176,65 +201,92 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
               SizedBox(
                 height: Dimensions.getConvertedHeightSize(context, 20),
               ),
-              Text(
-                "Sintomas:",
-                style: TextStyle(fontSize: Dimensions.getTextSize(context, 20)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Sintomas",
+                    style: TextStyle(
+                      color: CardioColors.black,
+                      fontSize: Dimensions.getTextSize(context, 20),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    strutStyle: StrutStyle.disabled,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: Dimensions.getEdgeInsets(context,
+                        left: 15, top: 15, bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.getConvertedHeightSize(context, 5),
+                      ),
+                      border: Border.all(
+                        color: CardioColors.black,
+                        width: Dimensions.getConvertedHeightSize(context, 1),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        CustomCheckItem(
+                          label: Strings.shortness_of_breath,
+                          value: _formData[LABEL_SHORTNESS_OF_BREATH],
+                          onChanged: (bool value) {
+                            setState(() {
+                              _formData[LABEL_SHORTNESS_OF_BREATH] = value;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height:
+                              Dimensions.getConvertedHeightSize(context, 10),
+                        ),
+                        CustomCheckItem(
+                          value: _formData[LABEL_EXCESSIVE_FATIGUE],
+                          onChanged: (bool value) {
+                            setState(() {
+                              _formData[LABEL_EXCESSIVE_FATIGUE] = value;
+                            });
+                          },
+                          label: Strings.excessive_fatigue,
+                        ),
+                        SizedBox(
+                          height:
+                              Dimensions.getConvertedHeightSize(context, 10),
+                        ),
+                        CustomCheckItem(
+                          value: _formData[LABEL_DIZZINESS],
+                          onChanged: (bool value) {
+                            setState(() {
+                              _formData[LABEL_DIZZINESS] = value;
+                            });
+                          },
+                          label: Strings.dizziness,
+                        ),
+                        SizedBox(
+                          height:
+                              Dimensions.getConvertedHeightSize(context, 10),
+                        ),
+                        CustomCheckItem(
+                          value: _formData[LABEL_BODY_PAIN],
+                          onChanged: (bool value) {
+                            setState(() {
+                              _formData[LABEL_BODY_PAIN] = value;
+                            });
+                          },
+                          label: Strings.body_pain,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              CheckboxListTile(
-                activeColor: Colors.teal,
-                value: _formData[LABEL_SHORTNESS_OF_BREATH],
-                onChanged: (bool value) {
-                  setState(() {
-                    _formData[LABEL_SHORTNESS_OF_BREATH] = value;
-                  });
-                },
-                title: Text(
-                  Strings.shortness_of_breath,
-                  style:
-                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
-                ),
-              ),
-              CheckboxListTile(
-                activeColor: Colors.teal,
-                value: _formData[LABEL_EXCESSIVE_FATIGUE],
-                onChanged: (bool value) {
-                  setState(() {
-                    _formData[LABEL_EXCESSIVE_FATIGUE] = value;
-                  });
-                },
-                title: Text(
-                  Strings.excessive_fatigue,
-                  style:
-                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
-                ),
-              ),
-              CheckboxListTile(
-                activeColor: Colors.teal,
-                value: _formData[LABEL_DIZZINESS],
-                onChanged: (bool value) {
-                  setState(() {
-                    _formData[LABEL_DIZZINESS] = value;
-                  });
-                },
-                title: Text(
-                  Strings.dizziness,
-                  style:
-                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
-                ),
-              ),
-              CheckboxListTile(
-                activeColor: Colors.teal,
-                value: _formData[LABEL_BODY_PAIN],
-                onChanged: (bool value) {
-                  setState(() {
-                    _formData[LABEL_BODY_PAIN] = value;
-                  });
-                },
-                title: Text(
-                  Strings.body_pain,
-                  style:
-                      TextStyle(fontSize: Dimensions.getTextSize(context, 15)),
-                ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 textEditingController: _observationController,
@@ -262,7 +314,9 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _submitForm(context) {
@@ -312,6 +366,8 @@ class _ExecuteExercisePageState extends State<ExecuteExercisePage> {
             excessiveFatigue: _formData[LABEL_EXCESSIVE_FATIGUE],
             executedDate:
                 DateHelper.addTimeToCurrentDate(_formData[LABEL_EXECUTED_DATE]),
+            // executionDay: DateTime.now(),
+            // executionTime: _formData[LABEL_TIME_OF_DAY],
             observation: _formData[LABEL_OBSERVATION],
           ),
         ),
