@@ -17,7 +17,6 @@ import 'package:cardio_flutter/features/biometrics/domain/entities/biometric.dar
 import 'package:cardio_flutter/features/exercises/data/models/exercise_model.dart';
 import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
 import 'package:cardio_flutter/features/generic_feature/data/datasources/generic_remote_data_source.dart';
-import 'package:cardio_flutter/features/exercises/domain/entities/exercise.dart';
 import 'package:cardio_flutter/features/generic_feature/data/repositories/generic_repository_impl.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/repositories/generic_repository.dart';
 import 'package:cardio_flutter/features/generic_feature/domain/usecases/add_recomendation.dart';
@@ -200,7 +199,7 @@ void _initManageProfessional() {
 }
 
 void _initExercise() {
- // Bloc
+  // Bloc
   sl.registerFactory(
     () => GenericBloc<Exercise>(
       addRecomendation: sl(),
@@ -237,8 +236,6 @@ void _initExercise() {
       firebaseTag: "Exercise",
     ),
   );
-
-
 }
 
 void _initLiquid() {
@@ -400,6 +397,7 @@ void _initMedication() {
     ),
   );
 }
+
 void reset() {
   sl.reset();
   init();

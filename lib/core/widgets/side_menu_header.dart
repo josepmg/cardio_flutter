@@ -9,8 +9,8 @@ class SideMenuHeader extends StatelessWidget {
   final String userCpf;
   const SideMenuHeader({
     Key key,
-    @required this.userName = "Fulano",
-    @required this.userCpf = "111.111.111-11",
+    @required this.userName,
+    @required this.userCpf,
   }) : super(key: key);
 
   @override

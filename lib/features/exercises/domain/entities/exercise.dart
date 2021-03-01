@@ -1,5 +1,4 @@
 import 'package:cardio_flutter/features/generic_feature/domain/entities/base_entity.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 

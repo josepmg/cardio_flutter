@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:developer' as dev;
 
 import 'package:cardio_flutter/core/platform/settings.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mixpanel_analytics/mixpanel_analytics.dart';
@@ -18,7 +17,6 @@ const LOCALE = "locale";
 var a;
 
 class Mixpanel {
-  static Dio _http;
   static MixpanelAnalytics _mixpanel;
   static StreamController<String> _user$ = StreamController<String>.broadcast();
 
@@ -36,7 +34,7 @@ class Mixpanel {
     );
   }
 
-  static Future<MixpanelResult> trackEvent(MixpanelEvents event,
+  static Future<void> trackEvent(MixpanelEvents event,
       {String userId, Map<String, dynamic> data}) async {
     String version = (await PackageInfo.fromPlatform()).version;
     _init(version);

@@ -53,7 +53,6 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
   TextEditingController _weightController;
   TextEditingController _bpmController;
   TextEditingController _observationController;
-  TextEditingController _swellingLocController;
 
   @override
   void initState() {
@@ -83,9 +82,6 @@ class _ExecuteBiometricPageState extends State<ExecuteBiometricPage> {
     );
     _observationController = TextEditingController(
       text: _formData[LABEL_OBSERVATION],
-    );
-    _swellingLocController = TextEditingController(
-      text: _formData[LABEL_SWELLING_LOC],
     );
 
     super.initState();

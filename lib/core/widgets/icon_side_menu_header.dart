@@ -2,15 +2,15 @@ import 'package:cardio_flutter/resources/cardio_colors.dart';
 import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/images.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 class IconSideMenuHeader extends StatelessWidget {
   final String userName;
   final String userCpf;
+
   const IconSideMenuHeader({
     Key key,
-    @required this.userName = "Fulano",
-    @required this.userCpf = "111.111.111-11",
+    @required this.userName,
+    @required this.userCpf,
   }) : super(key: key);
 
   @override

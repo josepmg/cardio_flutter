@@ -20,16 +20,20 @@ import 'package:focus_detector/focus_detector.dart';
 
 class HomePatientPage extends StatefulWidget {
   final Patient patient;
+  final String patientName;
+  final String patientCpf;
 
   const HomePatientPage({
     @required this.patient,
+    this.patientName,
+    this.patientCpf,
   });
 
   @override
-    _HomePatientPageState createState() => _HomePatientPageState();
-  }
+  _HomePatientPageState createState() => _HomePatientPageState();
+}
 
-  class _HomePatientPageState extends State<HomePatientPage> {
+class _HomePatientPageState extends State<HomePatientPage> {
   final _resumeDetectorKey = UniqueKey();
 
   @override
@@ -45,7 +49,6 @@ class HomePatientPage extends StatefulWidget {
       child: BasePage(
         hasDrawer: true,
         recomendation: "Home",
-        patient: widget.patient,
         body: SingleChildScrollView(
           child: Container(
             width: Dimensions.getConvertedWidthSize(context, 412),
@@ -96,7 +99,7 @@ class HomePatientPage extends StatefulWidget {
                     ),
                   ),
                 ),
-              SizedBox(
+                SizedBox(
                   height: Dimensions.getConvertedHeightSize(context, 20),
                 ),
 
