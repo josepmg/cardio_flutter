@@ -1,7 +1,8 @@
+import 'package:cardio_flutter/core/platform/mixpanel.dart';
 import 'package:cardio_flutter/core/utils/date_helper.dart';
 import 'package:cardio_flutter/core/utils/multimasked_text_controller.dart';
 import 'package:cardio_flutter/core/widgets/button.dart';
-import 'package:cardio_flutter/core/widgets/custom_selector.dart';
+import 'package:cardio_flutter/core/widgets/custom_dropdown_form_field.dart';
 import 'package:cardio_flutter/core/widgets/custom_text_form_field.dart';
 import 'package:cardio_flutter/core/widgets/loading_widget.dart';
 import 'package:cardio_flutter/features/auth/presentation/pages/basePage.dart';
@@ -12,6 +13,7 @@ import 'package:cardio_flutter/resources/dimensions.dart';
 import 'package:cardio_flutter/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_detector/focus_detector.dart';
 
 class ExecuteLiquidPage extends StatefulWidget {
   final Liquid liquid;
@@ -69,9 +71,17 @@ class _ExecuteLiquidPageState extends State<ExecuteLiquidPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      body: SingleChildScrollView(
-        child: BlocListener<GenericBloc<Liquid>, GenericState<Liquid>>(
+    return FocusDetector(
+      key: UniqueKey(),
+      onFocusGained: () {
+        Mixpanel.trackEvent(
+          MixpanelEvents.OPEN_PAGE,
+          data: {"pageTitle": "ExecuteLiquidPage"},
+        );
+      },
+      child: BasePage(
+        recomendation: Strings.liquid,
+        body: BlocListener<GenericBloc<Liquid>, GenericState<Liquid>>(
           listener: (context, state) {
             if (state is Error<Liquid>) {
               Scaffold.of(context).showSnackBar(
@@ -99,7 +109,10 @@ class _ExecuteLiquidPageState extends State<ExecuteLiquidPage> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return Form(
+    return Container(
+      padding: Dimensions.getEdgeInsets(context,
+          top: 10, left: 30, right: 30, bottom: 20),
+      child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -107,12 +120,12 @@ class _ExecuteLiquidPageState extends State<ExecuteLiquidPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: Dimensions.getConvertedHeightSize(context, 10),
+                height: Dimensions.getConvertedHeightSize(context, 20),
               ),
               CustomTextFormField(
                 isRequired: true,
                 textEditingController: _nameController,
-                hintText: "",
+                hintText: Strings.ingested_liquids_name,
                 title: Strings.liquid,
                 onChanged: (value) {
                   setState(() {
@@ -120,30 +133,35 @@ class _ExecuteLiquidPageState extends State<ExecuteLiquidPage> {
                   });
                 },
               ),
-              CustomSelector(
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
+              ),
+              CustomDropdownFormField(
                 title: Strings.reference,
-                options: Arrays.reference.keys.toList(),
-                subtitle: _formData[LABEL_REFERENCE],
+                dropDownList: Arrays.reference.keys.toList(),
                 onChanged: (value) {
                   setState(() {
-                    _formData[LABEL_REFERENCE] =
-                        Arrays.reference.keys.toList()[value];
+                    _formData[LABEL_REFERENCE] = value;
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
                 keyboardType: TextInputType.number,
                 textEditingController: _quantityController,
-                hintText: (Arrays.reference[_formData[LABEL_REFERENCE]] == null)
-                    ? ""
-                    : "Quantidade de ${_formData[LABEL_REFERENCE]}",
+                hintText: Strings.ingested_liquids_quantity,
                 title: Strings.quantity,
                 onChanged: (value) {
                   setState(() {
                     _formData[LABEL_QUANTITY] = value;
                   });
                 },
+              ),
+              SizedBox(
+                height: Dimensions.getConvertedHeightSize(context, 13),
               ),
               CustomTextFormField(
                 isRequired: true,
@@ -173,7 +191,9 @@ class _ExecuteLiquidPageState extends State<ExecuteLiquidPage> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _submitForm(context) {
