@@ -11,6 +11,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flushbar/flushbar.dart';
 
 class HomeProfessionalPage extends StatelessWidget {
+  final Professional professional;
+  final String professionalName;
+  final String professionalCpf;
+
+  HomeProfessionalPage({
+    Key key,
+    this.professional,
+    this.professionalName,
+    this.professionalCpf,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ManageProfessionalBloc, ManageProfessionalState>(
@@ -39,7 +50,10 @@ class HomeProfessionalPage extends StatelessWidget {
   Widget _buildBody(BuildContext context, Professional professional,
       List<Patient> patientList) {
     return BasePage(
+      hasDrawer: true,
       recomendation: Strings.home_professional_page_title,
+      userName: professionalName,
+      userCpf: professionalCpf,
       body: Container(
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(

@@ -4,7 +4,6 @@ import 'package:cardio_flutter/core/widgets/side_menu_exit_button.dart';
 import 'package:cardio_flutter/core/widgets/side_menu_header.dart';
 import 'package:cardio_flutter/core/widgets/side_menu_item.dart';
 import 'package:cardio_flutter/features/app_info/presentation/pages/app_info_page.dart';
-import 'package:cardio_flutter/features/auth/domain/entities/patient.dart';
 import 'package:cardio_flutter/features/help/presentation/pages/patient_help_page.dart';
 import 'package:cardio_flutter/features/help/presentation/pages/professional_help_page.dart';
 import 'package:cardio_flutter/resources/cardio_colors.dart';
@@ -19,7 +18,8 @@ class BasePage extends StatelessWidget {
   final Function addFunction;
   final String recomendation;
   final bool hasDrawer;
-  final Patient patient;
+  final String userName;
+  final String userCpf;
 
   BasePage({
     Key key,
@@ -27,7 +27,8 @@ class BasePage extends StatelessWidget {
     this.addFunction,
     this.recomendation = "",
     this.hasDrawer = false,
-    this.patient,
+    this.userName = "Fulane",
+    this.userCpf = "111.111.111-11",
   }) : super(key: key);
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -65,8 +66,8 @@ class BasePage extends StatelessWidget {
                 color: CardioColors.white,
               ),
               title: Text(
-                patient != null && patient.name != null
-                    ? "Olá, ${patient.name.split(" ")[0]}!"
+                userName != null && recomendation == null
+                    ? "Olá, $userName!"
                     : recomendation,
                 style: _textStyle,
               ),
@@ -93,8 +94,8 @@ class BasePage extends StatelessWidget {
                     children: <Widget>[
                       /// Header
                       SideMenuHeader(
-                        userName: patient?.name,
-                        userCpf: patient?.cpf,
+                        userName: userName,
+                        userCpf: userCpf,
                       ),
                       SizedBox(
                         height: Dimensions.getConvertedHeightSize(context, 25),
