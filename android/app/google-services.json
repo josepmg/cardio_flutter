@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "142778655449",
+    "firebase_url": "https://cardio-tcc-8faf0-default-rtdb.firebaseio.com",
+    "project_id": "cardio-tcc-8faf0",
+    "storage_bucket": "cardio-tcc-8faf0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142778655449:android:2de4c3b68c81d4c96c54c8",
+        "android_client_info": {
+          "package_name": "br.uff.cardio_flutter.tcc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142778655449-rj9qc9bbbinhv994up48rfll138f8cn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoKKxWs9Iwymd21FC_V6soiITdLW2rfAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142778655449-rj9qc9bbbinhv994up48rfll138f8cn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

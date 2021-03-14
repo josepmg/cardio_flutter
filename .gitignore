@@ -9,6 +9,7 @@
 .buildlog/
 .history
 .svn/
+.fvm
 
 # IntelliJ related
 *.iml
@@ -75,3 +76,4 @@ build/
 ios/Flutter/flutter_export_environment.sh
 android/local.properties
 .packages
+.flutter-plugins-dependencies
